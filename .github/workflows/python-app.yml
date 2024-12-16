@@ -42,9 +42,10 @@ jobs:
             
       run: |
         echo Downloading Mend CLI
-        Invoke-WebRequest -Uri "https://downloads.mend.io/cli/windows_amd64/mend.exe" -OutFile "mend.exe"
-        echo "Run Mend dependencies scan"     
-        ./mend dep --update --scope "Testing//hebspacy"  --dir ${{ github.workspace }} --reachability 
+        curl https://downloads.mend.io/cli/linux_amd64/mend -o /usr/local/bin/mend && chmod +x /usr/local/bin/mend
+        echo run Mend dependencies scan
+        mend dep --update --scope "Testing//hebspacy" --dir ${{ github.workspace }} --reachability 
+
 
 #    - name: Test with pytest
 #      run: |
