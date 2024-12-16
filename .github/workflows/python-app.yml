@@ -32,6 +32,20 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with pytest
+
+
+    - name: Mend CLI Scan
+      env:
+        MEND_EMAIL: mendscanner@ness.com
+        MEND_USER_KEY: 1578756296eb460f8ea78f775aa1c66980a4c6e981ed406691881efe16df938a
+        MEND_URL: https://saas-il.mend.io/
+            
       run: |
-        pytest
+        echo Downloading Mend CLI
+        Invoke-WebRequest -Uri "https://downloads.mend.io/cli/windows_amd64/mend.exe" -OutFile "mend.exe"
+        echo "Run Mend dependencies scan"     
+        ./mend dep --update --scope "Testing//hebspacy"  --dir ${{ github.workspace }} --reachability 
+
+#    - name: Test with pytest
+#      run: |
+#        pytest
